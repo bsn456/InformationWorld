@@ -1,1 +1,416 @@
-CHeck
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Daily Scope | Vlog & Editorials</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Oswald for headlines (editorial feel), Inter for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Configuration for Custom Fonts and Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Oswald', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            red: '#e63946',
+                            dark: '#111827',
+                            gray: '#f3f4f6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for Editorial Aesthetics */
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .title-hover-underline {
+            text-decoration: none;
+            background-image: linear-gradient(currentColor, currentColor);
+            background-position: 0% 100%;
+            background-repeat: no-repeat;
+            background-size: 0% 2px;
+            transition: background-size 0.3s ease;
+        }
+        
+        .group:hover .title-hover-underline,
+        .title-hover-underline:hover {
+            background-size: 100% 2px;
+        }
+
+        .image-zoom-wrapper {
+            overflow: hidden;
+        }
+
+        .image-zoom {
+            transition: transform 0.5s ease;
+        }
+
+        .group:hover .image-zoom {
+            transform: scale(1.05);
+        }
+
+        /* Play button overlay for video content */
+        .play-btn-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(17, 24, 39, 0.8);
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        
+        .group:hover .play-btn-overlay {
+            background: #e63946;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        /* Clean article separator */
+        .article-separator:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 font-sans">
+
+    <!-- Sticky Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="font-heading font-bold text-2xl tracking-tight flex items-center gap-2">
+                        <div class="w-4 h-4 bg-brand-red rounded-sm"></div>
+                        THE SCOPE
+                    </a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="text-gray-900 font-medium hover:text-brand-red transition-colors duration-200">Home</a>
+                    <a href="#" class="text-gray-500 font-medium hover:text-brand-red transition-colors duration-200">Latest Videos</a>
+                    <a href="#" class="text-gray-500 font-medium hover:text-brand-red transition-colors duration-200">Editorials</a>
+                    <a href="#" class="text-gray-500 font-medium hover:text-brand-red transition-colors duration-200">Podcasts</a>
+                    <a href="#" class="text-gray-500 font-medium hover:text-brand-red transition-colors duration-200">Tech</a>
+                </nav>
+
+                <!-- Search & Mobile Menu Button -->
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-500 hover:text-gray-900 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                    <button id="mobile-menu-btn" class="md:hidden text-gray-500 hover:text-gray-900">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-brand-red">Home</a>
+                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-brand-red">Latest Videos</a>
+                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-brand-red">Editorials</a>
+                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-brand-red">Podcasts</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Featured Hero Section -->
+        <section class="mb-12 border-b border-gray-200 pb-12">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="font-heading font-bold text-lg uppercase tracking-wider text-brand-red">Featured Vlog</h2>
+                <span class="text-sm text-gray-500 font-medium">October 1, 2026</span>
+            </div>
+            
+            <a href="#" class="group block cursor-pointer">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <!-- Hero Image/Video Thumbnail -->
+                    <div class="lg:col-span-8 relative image-zoom-wrapper rounded-sm bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80" alt="Pikes Peak Trail" class="w-full h-[400px] lg:h-[500px] object-cover image-zoom">
+                        <!-- Play Button Overlay -->
+                        <div class="play-btn-overlay">
+                            <svg class="w-8 h-8 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </div>
+                        <div class="absolute bottom-4 right-4 bg-black/80 text-white text-xs font-bold px-2 py-1 rounded-sm tracking-wider">
+                            18:42
+                        </div>
+                    </div>
+                    
+                    <!-- Hero Text -->
+                    <div class="lg:col-span-4 flex flex-col justify-center">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-gray-900 text-white text-xs font-bold px-2 py-1 uppercase tracking-widest">Outdoors</span>
+                            <span class="text-gray-500 text-sm">4K Video</span>
+                        </div>
+                        <h1 class="font-heading font-bold text-4xl lg:text-5xl leading-tight mb-4 text-gray-900">
+                            <span class="title-hover-underline">Conquering Pikes Peak: The Ultimate 2026 Trail Guide</span>
+                        </h1>
+                        <p class="text-gray-600 text-lg mb-6 leading-relaxed">
+                            We took on the Barr Trail before the winter freeze. Here's exactly what you need to know about altitude sickness, essential gear, and pacing before your next 14er ascent in Colorado.
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <img src="https://ui-avatars.com/api/?name=Sarah+Jenkins&background=e63946&color=fff" alt="Sarah Jenkins" class="w-10 h-10 rounded-full">
+                            <div>
+                                <p class="text-sm font-semibold text-gray-900">Sarah Jenkins</p>
+                                <p class="text-xs text-gray-500">Lead Adventure Editor</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </section>
+
+        <!-- Two Column Layout: Latest Updates & Sidebar -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            
+            <!-- Main Content Area (Latest Updates) -->
+            <main class="lg:col-span-8">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="font-heading font-bold text-2xl border-l-4 border-brand-red pl-3 text-gray-900">Latest Updates</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Article 1 -->
+                    <article class="group cursor-pointer article-separator md:border-none md:pb-0 md:mb-0">
+                        <div class="relative image-zoom-wrapper rounded-sm mb-4 bg-gray-100">
+                            <img src="https://images.unsplash.com/photo-1518605368461-1ee7e163b7eb?auto=format&fit=crop&w=800&q=80" alt="Football Tactics" class="w-full h-56 object-cover image-zoom">
+                        </div>
+                        <p class="text-brand-red text-xs font-bold uppercase tracking-widest mb-2">Sports Analysis</p>
+                        <h3 class="font-heading font-bold text-xl leading-snug mb-2 text-gray-900">
+                            <span class="title-hover-underline">Tactical Breakdown: How Madrid Dismantled the High Line</span>
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+                            A deep dive into the weekend's biggest European clash, analyzing the false-nine movement and midfield rotations that completely broke down the defensive block.
+                        </p>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span>By Marcus Cole</span>
+                            <span>5 min read</span>
+                        </div>
+                    </article>
+
+                    <!-- Article 2 -->
+                    <article class="group cursor-pointer article-separator md:border-none md:pb-0 md:mb-0">
+                        <div class="relative image-zoom-wrapper rounded-sm mb-4 bg-gray-100">
+                            <img src="https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=800&q=80" alt="GPU Hardware" class="w-full h-56 object-cover image-zoom">
+                        </div>
+                        <p class="text-brand-red text-xs font-bold uppercase tracking-widest mb-2">Hardware</p>
+                        <h3 class="font-heading font-bold text-xl leading-snug mb-2 text-gray-900">
+                            <span class="title-hover-underline">The Best GPU Deals This Week: High-End Cards Drop Below MSRP</span>
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+                            Building a rig for the holidays? We tracked down the absolute best hardware discounts across the web for uncompromising 1440p and 4K gaming setups.
+                        </p>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span>By Tech Desk</span>
+                            <span>Updated 2 hrs ago</span>
+                        </div>
+                    </article>
+
+                    <!-- Article 3 -->
+                    <article class="group cursor-pointer article-separator md:border-none md:pb-0 md:mb-0">
+                        <div class="relative image-zoom-wrapper rounded-sm mb-4 bg-gray-100">
+                            <img src="https://images.unsplash.com/photo-1504280390467-3331b26b23d9?auto=format&fit=crop&w=800&q=80" alt="Rocky Mountain National Park" class="w-full h-56 object-cover image-zoom">
+                        </div>
+                        <p class="text-brand-red text-xs font-bold uppercase tracking-widest mb-2">Travel</p>
+                        <h3 class="font-heading font-bold text-xl leading-snug mb-2 text-gray-900">
+                            <span class="title-hover-underline">Hidden Gems: Reserving the Best Spots in Rocky Mountain National Park</span>
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+                            Skip the massive crowds at Moraine Park. These lesser-known backcountry spots offer unmatched views of the Continental Divide, but you need to book them now.
+                        </p>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span>By Sarah Jenkins</span>
+                            <span>7 min read</span>
+                        </div>
+                    </article>
+
+                    <!-- Article 4 (Vlog style) -->
+                    <article class="group cursor-pointer article-separator md:border-none md:pb-0 md:mb-0">
+                        <div class="relative image-zoom-wrapper rounded-sm mb-4 bg-gray-100">
+                            <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80" alt="Camera Gear" class="w-full h-56 object-cover image-zoom">
+                            <div class="play-btn-overlay w-10 h-10">
+                                <svg class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                            </div>
+                            <div class="absolute bottom-2 right-2 bg-black/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm tracking-wider">
+                                12:05
+                            </div>
+                        </div>
+                        <p class="text-brand-red text-xs font-bold uppercase tracking-widest mb-2">Vlog</p>
+                        <h3 class="font-heading font-bold text-xl leading-snug mb-2 text-gray-900">
+                            <span class="title-hover-underline">Vlog #42: My Minimalist Travel Camera Setup for 2026</span>
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+                            Ditching the heavy zoom lenses. Here is exactly what is going in my sling bag for our upcoming three-week train trip across central Europe.
+                        </p>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span>By Alex Rivera</span>
+                            <span>Video • 12m</span>
+                        </div>
+                    </article>
+                </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="lg:col-span-4">
+                <div class="sticky top-24">
+                    <!-- Trending Section -->
+                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-sm mb-8">
+                        <h2 class="font-heading font-bold text-xl mb-6 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                            Trending Topics
+                        </h2>
+                        
+                        <ol class="space-y-5">
+                            <li class="flex gap-4 group cursor-pointer">
+                                <span class="font-heading font-bold text-3xl text-gray-300 group-hover:text-brand-red transition-colors">01</span>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 leading-snug group-hover:text-brand-red transition-colors text-sm">Colorado 14ers: Which peaks should absolute beginners hike first?</h4>
+                                </div>
+                            </li>
+                            <li class="flex gap-4 group cursor-pointer">
+                                <span class="font-heading font-bold text-3xl text-gray-300 group-hover:text-brand-red transition-colors">02</span>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 leading-snug group-hover:text-brand-red transition-colors text-sm">Premier League: The rising star completely changing the midfield meta</h4>
+                                </div>
+                            </li>
+                            <li class="flex gap-4 group cursor-pointer">
+                                <span class="font-heading font-bold text-3xl text-gray-300 group-hover:text-brand-red transition-colors">03</span>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 leading-snug group-hover:text-brand-red transition-colors text-sm">Top 5 Custom Mechanical Keyboards under $100 (2026 Edition)</h4>
+                                </div>
+                            </li>
+                            <li class="flex gap-4 group cursor-pointer">
+                                <span class="font-heading font-bold text-3xl text-gray-300 group-hover:text-brand-red transition-colors">04</span>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 leading-snug group-hover:text-brand-red transition-colors text-sm">Live Updates: Developer press conference highlights from Tokyo</h4>
+                                </div>
+                            </li>
+                            <li class="flex gap-4 group cursor-pointer">
+                                <span class="font-heading font-bold text-3xl text-gray-300 group-hover:text-brand-red transition-colors">05</span>
+                                <div>
+                                    <h4 class="font-medium text-gray-900 leading-snug group-hover:text-brand-red transition-colors text-sm">Why audiophiles are finally moving back to wired headphones</h4>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <!-- Newsletter/Podcast Widget -->
+                    <div class="bg-brand-dark text-white p-6 rounded-sm">
+                        <h3 class="font-heading font-bold text-xl mb-2">The Scope Podcast</h3>
+                        <p class="text-gray-400 text-sm mb-4">Deep dives into tech, travel, and sports culture. New episodes every Tuesday.</p>
+                        <button class="w-full bg-brand-red hover:bg-red-700 text-white font-bold py-2 px-4 rounded-sm transition-colors text-sm uppercase tracking-wider">
+                            Listen Now
+                        </button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <div class="w-4 h-4 bg-brand-red rounded-sm"></div>
+                <span class="font-heading font-bold text-xl tracking-tight text-gray-900">THE SCOPE</span>
+            </div>
+            
+            <div class="flex space-x-6 text-sm text-gray-500">
+                <a href="#" class="hover:text-gray-900 transition-colors">About</a>
+                <a href="#" class="hover:text-gray-900 transition-colors">Editorial Guidelines</a>
+                <a href="#" class="hover:text-gray-900 transition-colors">Contact</a>
+                <a href="#" class="hover:text-gray-900 transition-colors">Privacy Policy</a>
+            </div>
+            
+            <p class="text-sm text-gray-400">
+                &copy; 2026 The Scope Media. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile menu toggle
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+
+            // Mock video click handler to replace alerts
+            const videoLinks = document.querySelectorAll('a.group');
+            
+            videoLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Simple custom notification instead of an ugly alert()
+                    const notification = document.createElement('div');
+                    notification.className = 'fixed bottom-4 right-4 bg-gray-900 text-white px-6 py-3 rounded shadow-lg transform transition-all duration-300 translate-y-10 opacity-0 z-50 flex items-center gap-3';
+                    notification.innerHTML = `
+                        <div class="w-2 h-2 bg-brand-red rounded-full"></div>
+                        <span class="font-medium text-sm">Loading article/video...</span>
+                    `;
+                    
+                    document.body.appendChild(notification);
+                    
+                    // Animate in
+                    requestAnimationFrame(() => {
+                        notification.classList.remove('translate-y-10', 'opacity-0');
+                    });
+                    
+                    // Remove after 2.5 seconds
+                    setTimeout(() => {
+                        notification.classList.add('translate-y-10', 'opacity-0');
+                        setTimeout(() => notification.remove(), 300);
+                    }, 2500);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
